@@ -133,3 +133,61 @@ export const useDailyProgress = () =>
     current: state.sessionCardsAnswered,
     percentage: Math.min((state.sessionCardsAnswered / state.preferences.dailyGoal) * 100, 100),
   }))
+
+// Category radar data (0-100 percentage for each category)
+export const useCategoryRadarData = () =>
+  useStore((state) => {
+    const categories: Category[] = [
+      'science', 'art', 'history', 'geography',
+      'sport', 'music', 'cinema', 'literature',
+    ]
+
+    const data: Record<Category, number> = {} as Record<Category, number>
+
+    categories.forEach((cat) => {
+      const catQuestions = questions.filter((q) => q.category === cat)
+      const knownCount = catQuestions.filter((q) => state.knownCards.includes(q.id)).length
+      const percentage = catQuestions.length > 0 ? (knownCount / catQuestions.length) * 100 : 0
+      data[cat] = Math.round(percentage)
+    })
+
+    return data
+  })
+
+// All category levels for badges
+export const useCategoryLevels = () =>
+  useStore((state) => {
+    const levels: Record<Category, number> = {} as Record<Category, number>
+    const categories: Category[] = [
+      'science', 'art', 'history', 'geography',
+      'sport', 'music', 'cinema', 'literature',
+    ]
+
+    categories.forEach((cat) => {
+      levels[cat] = getLevel(state.stats.categoryProgress[cat].xp)
+    })
+
+    return levels
+  })
+
+// Badge stats for checking unlocks
+export const useBadgeStats = () =>
+  useStore((state) => {
+    const categories: Category[] = [
+      'science', 'art', 'history', 'geography',
+      'sport', 'music', 'cinema', 'literature',
+    ]
+
+    const categoryLevels: Record<Category, number> = {} as Record<Category, number>
+    categories.forEach((cat) => {
+      categoryLevels[cat] = getLevel(state.stats.categoryProgress[cat].xp)
+    })
+
+    return {
+      totalXp: state.stats.totalXp,
+      currentStreak: state.stats.currentStreak,
+      longestStreak: state.stats.longestStreak,
+      totalCards: state.learnedCards.length + state.knownCards.length,
+      categoryLevels,
+    }
+  })

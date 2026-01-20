@@ -1,6 +1,6 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 50/103**
+**Progress: 60/103**
 
 ---
 
@@ -71,16 +71,16 @@
 
 ## VI. GAMIFICATION (51-60)
 
-- [ ] **51. Math** : XP Formula.
-- [ ] **52. Logic** : Streak Calculator.
-- [ ] **53. Data** : Levels Thresholds.
-- [ ] **54. UI** : XP Progress Bar.
-- [ ] **55. UI** : Level Up Toast.
-- [ ] **56. UI** : Streak Flame Icon.
-- [ ] **57. Page** : User Profile Stats.
-- [ ] **58. Chart** : Knowledge Graph.
-- [ ] **59. Badges** : Unlock System.
-- [ ] **60. Persist** : Save Stats.
+- [x] **51. Math** : XP Formula.
+- [x] **52. Logic** : Streak Calculator.
+- [x] **53. Data** : Levels Thresholds.
+- [x] **54. UI** : XP Progress Bar.
+- [x] **55. UI** : Level Up Toast.
+- [x] **56. UI** : Streak Flame Icon.
+- [x] **57. Page** : User Profile Stats.
+- [x] **58. Chart** : Knowledge Graph.
+- [x] **59. Badges** : Unlock System.
+- [x] **60. Persist** : Save Stats.
 
 ## VII. LEARNING ALGO (61-70)
 
@@ -142,4 +142,4 @@
 
 ---
 
-**Last Updated:** Phase 50
+**Last Updated:** Phase 60
