@@ -1,6 +1,6 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 8/103**
+**Progress: 9/103**
 
 ---
 
@@ -14,7 +14,7 @@
 - [x] **06. Hooks** : Husky pre-commit.
 - [x] **07. CSS** : Install Tailwind + Config.
 - [x] **08. Colors** : Theme Token "Dark Mode" (Variables CSS).
-- [ ] **09. Typo** : Font Inter integration.
+- [x] **09. Typo** : Font Inter integration.
 - [ ] **10. Structure** : Folders (atoms, molecules, organisms).
 
 ## II. DATA CORE (11-20)
