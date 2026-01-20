@@ -1,6 +1,6 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 19/103**
+**Progress: 20/103**
 
 ---
 
@@ -28,7 +28,7 @@
 - [x] **17. Selectors** : Optimize re-renders.
 - [x] **18. Actions** : Toggle Categories logic.
 - [x] **19. Actions** : Answer tracking logic.
-- [ ] **20. Versioning** : Store migration system.
+- [x] **20. Versioning** : Store migration system.
 
 ## III. ATOMIC UI (21-30)
 

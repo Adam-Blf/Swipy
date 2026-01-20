@@ -1,6 +1,6 @@
 # Swipy
 
-![Progress](https://img.shields.io/badge/Progress-10%2F103-blue)
+![Progress](https://img.shields.io/badge/Progress-20%2F103-blue)
 ![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
 ![PWA](https://img.shields.io/badge/PWA-Ready-green)
 
@@ -54,6 +54,12 @@ Voir [PROJECT_ROADMAP.md](./PROJECT_ROADMAP.md) pour le détail des 103 phases.
 ## Changelog
 
 ### 2026-01-20
+- Phase 11-20: DATA CORE complet
+  - TypeScript interfaces (Question, User)
+  - Zod validation schemas
+  - 100 questions trivia
+  - Zustand store avec persist
+  - Selectors optimisés
 - Phase 01-10: FONDATIONS complètes
   - Vite + React + TypeScript + SWC
   - Tailwind CSS v4 avec Dark Theme
