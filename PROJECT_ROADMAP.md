@@ -1,13 +1,13 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 1/103**
+**Progress: 2/103**
 
 ---
 
 ## I. FONDATIONS (01-10)
 
 - [x] **01. Init** : Vite + React + TS + SWC.
-- [ ] **02. Config** : `vite.config.ts` (alias `@/`).
+- [x] **02. Config** : `vite.config.ts` (alias `@/`).
 - [ ] **03. Git** : `.gitignore` complet + Init.
 - [ ] **04. Lint** : ESLint strict config.
 - [ ] **05. Format** : Prettier config.
@@ -142,4 +142,4 @@
 
 ---
 
-**Last Updated:** Phase 1
+**Last Updated:** Phase 2
