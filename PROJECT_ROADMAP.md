@@ -1,6 +1,6 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 40/103**
+**Progress: 50/103**
 
 ---
 
@@ -58,16 +58,16 @@
 
 ## V. SWIPE ENGINE (41-50)
 
-- [ ] **41. Motion** : Framer install.
-- [ ] **42. Gesture** : Drag Constraints.
-- [ ] **43. Feedback** : Rotation Physics.
-- [ ] **44. UI** : Color Overlay (Red/Green).
-- [ ] **45. Logic** : Snap Back Threshold.
-- [ ] **46. Anim** : Exit Trajectory.
-- [ ] **47. Logic** : Deck Queue System.
-- [ ] **48. UI** : Empty State (Refresh).
-- [ ] **49. Store** : Connect Swipe to Actions.
-- [ ] **50. Feature** : Undo Last Swipe.
+- [x] **41. Motion** : Framer install.
+- [x] **42. Gesture** : Drag Constraints.
+- [x] **43. Feedback** : Rotation Physics.
+- [x] **44. UI** : Color Overlay (Red/Green).
+- [x] **45. Logic** : Snap Back Threshold.
+- [x] **46. Anim** : Exit Trajectory.
+- [x] **47. Logic** : Deck Queue System.
+- [x] **48. UI** : Empty State (Refresh).
+- [x] **49. Store** : Connect Swipe to Actions.
+- [x] **50. Feature** : Undo Last Swipe.
 
 ## VI. GAMIFICATION (51-60)
 
@@ -142,4 +142,4 @@
 
 ---
 
-**Last Updated:** Phase 3
+**Last Updated:** Phase 50

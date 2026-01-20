@@ -1,11 +1,10 @@
-import { useNavigate } from 'react-router-dom'
-import { Button, Avatar, ProgressBar, StreakProgress } from '@/components/atoms'
+import { Avatar, ProgressBar, StreakProgress } from '@/components/atoms'
 import { Card, CardHeader, CardContent } from '@/components/molecules'
+import { TabBar } from '@/components/organisms'
 import { useUserName, useTotalXp, useCurrentStreak, useLongestStreak, useTotalStats } from '@/store'
 import { getLevel } from '@/types'
 
 export function Stats() {
-  const navigate = useNavigate()
   const userName = useUserName()
   const totalXp = useTotalXp()
   const currentStreak = useCurrentStreak()
@@ -65,10 +64,8 @@ export function Stats() {
         </CardContent>
       </Card>
 
-      {/* Back Button */}
-      <Button variant="ghost" className="w-full" onClick={() => navigate('/swipe')}>
-        Retour au jeu
-      </Button>
+      {/* Tab Bar */}
+      <TabBar />
     </div>
   )
 }

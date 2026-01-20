@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
-import { Button, Icon } from '@/components/atoms'
-import { Card } from '@/components/molecules'
-import { ConfirmModal } from '@/components/molecules'
+import { Icon } from '@/components/atoms'
+import { Card, ConfirmModal } from '@/components/molecules'
+import { TabBar } from '@/components/organisms'
 import { useStore, useSoundEnabled, useHapticEnabled } from '@/store'
 import { useState } from 'react'
 
@@ -66,11 +66,6 @@ export function Settings() {
         </div>
       </Card>
 
-      {/* Back */}
-      <Button variant="ghost" className="w-full" onClick={() => navigate(-1)}>
-        Retour
-      </Button>
-
       {/* Reset Confirmation Modal */}
       <ConfirmModal
         isOpen={showResetModal}
@@ -81,6 +76,9 @@ export function Settings() {
         confirmText="Supprimer"
         variant="danger"
       />
+
+      {/* Tab Bar */}
+      <TabBar />
     </div>
   )
 }
