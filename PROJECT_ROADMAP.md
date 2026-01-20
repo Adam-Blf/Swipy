@@ -1,6 +1,6 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 3/103**
+**Progress: 4/103**
 
 ---
 
@@ -9,7 +9,7 @@
 - [x] **01. Init** : Vite + React + TS + SWC.
 - [x] **02. Config** : `vite.config.ts` (alias `@/`).
 - [x] **03. Git** : `.gitignore` complet + Init.
-- [ ] **04. Lint** : ESLint strict config.
+- [x] **04. Lint** : ESLint strict config.
 - [ ] **05. Format** : Prettier config.
 - [ ] **06. Hooks** : Husky pre-commit.
 - [ ] **07. CSS** : Install Tailwind + Config.
