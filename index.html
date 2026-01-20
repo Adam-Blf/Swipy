@@ -1,12 +1,28 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="fr" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <!-- PWA & Mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#121212" />
+    <meta name="theme-color" content="#7C3AED" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Swipy" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-TileColor" content="#7C3AED" />
+    <meta name="msapplication-tap-highlight" content="no" />
+
+    <!-- Touch & Gesture optimization -->
+    <meta name="touch-action" content="pan-y" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/mask-icon.svg" color="#7C3AED" />
 
     <!-- Preconnect for Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,8 +31,45 @@
     <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <title>Swipy - Learn by Swiping</title>
-    <meta name="description" content="Swipy - La PWA de micro-learning gamifié. Apprends en swipant des cartes de culture générale." />
+    <!-- SEO -->
+    <title>Swipy - Micro-Learning Gamifié</title>
+    <meta name="description" content="Apprends en swipant des cartes de culture générale. Gagne de l'XP, débloques des badges et maintiens ta série quotidienne. 100% offline." />
+    <meta name="keywords" content="learning, quiz, trivia, education, gamification, pwa, offline, culture générale, micro-learning" />
+    <meta name="author" content="Adam Beloucif" />
+    <link rel="canonical" href="https://swipy.app" />
+
+    <!-- OpenGraph (Facebook, LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://swipy.app" />
+    <meta property="og:title" content="Swipy - Micro-Learning Gamifié" />
+    <meta property="og:description" content="Apprends en swipant des cartes de culture générale. Gagne de l'XP et débloques des badges !" />
+    <meta property="og:image" content="https://swipy.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Swipy" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://swipy.app" />
+    <meta name="twitter:title" content="Swipy - Micro-Learning Gamifié" />
+    <meta name="twitter:description" content="Apprends en swipant des cartes de culture générale. 100% offline." />
+    <meta name="twitter:image" content="https://swipy.app/og-image.png" />
+
+    <!-- Prevent zoom on double-tap (iOS) -->
+    <style>
+      * {
+        touch-action: manipulation;
+      }
+      html {
+        -webkit-tap-highlight-color: transparent;
+        overscroll-behavior: none;
+      }
+      body {
+        overscroll-behavior-y: contain;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

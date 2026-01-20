@@ -1,6 +1,6 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 70/103**
+**Progress: 80/103**
 
 ---
 
@@ -97,16 +97,16 @@
 
 ## VIII. PWA & PERF (71-80)
 
-- [ ] **71. Manifest** : Icons & Meta.
-- [ ] **72. Worker** : Offline Strategy.
-- [ ] **73. Install** : Custom Install Prompt.
-- [ ] **74. Assets** : Image Optimization.
-- [ ] **75. Code** : Lazy Loading Routes.
-- [ ] **76. Audit** : Lighthouse Accessibility.
-- [ ] **77. SEO** : Meta Tags OpenGraph.
-- [ ] **78. Touch** : Disable Zoom/Bounce.
-- [ ] **79. Icon** : Maskable Support.
-- [ ] **80. Cache** : Versioning Assets.
+- [x] **71. Manifest** : Icons & Meta.
+- [x] **72. Worker** : Offline Strategy.
+- [x] **73. Install** : Custom Install Prompt.
+- [x] **74. Assets** : Image Optimization.
+- [x] **75. Code** : Lazy Loading Routes.
+- [x] **76. Audit** : Lighthouse Accessibility.
+- [x] **77. SEO** : Meta Tags OpenGraph.
+- [x] **78. Touch** : Disable Zoom/Bounce.
+- [x] **79. Icon** : Maskable Support.
+- [x] **80. Cache** : Versioning Assets.
 
 ## IX. SETTINGS & POLISH (81-90)
 
@@ -142,4 +142,4 @@
 
 ---
 
-**Last Updated:** Phase 70
+**Last Updated:** Phase 80
