@@ -1,6 +1,6 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 30/103**
+**Progress: 40/103**
 
 ---
 
@@ -45,16 +45,16 @@
 
 ## IV. ONBOARDING (31-40)
 
-- [ ] **31. Router** : Config React Router.
-- [ ] **32. Page** : Splash Screen Animé.
-- [ ] **33. Page** : Welcome View.
-- [ ] **34. Form** : User Name Input.
-- [ ] **35. Grid** : Category Selector UI.
-- [ ] **36. Interaction** : Selection Haptics.
-- [ ] **37. Logic** : Validation Min 1 Category.
-- [ ] **38. Overlay** : Tuto Swipe.
-- [ ] **39. Anim** : Page Transitions.
-- [ ] **40. Guard** : Redirect if no config.
+- [x] **31. Router** : Config React Router.
+- [x] **32. Page** : Splash Screen Animé.
+- [x] **33. Page** : Welcome View.
+- [x] **34. Form** : User Name Input.
+- [x] **35. Grid** : Category Selector UI.
+- [x] **36. Interaction** : Selection Haptics.
+- [x] **37. Logic** : Validation Min 1 Category.
+- [x] **38. Overlay** : Tuto Swipe.
+- [x] **39. Anim** : Page Transitions.
+- [x] **40. Guard** : Redirect if no config.
 
 ## V. SWIPE ENGINE (41-50)
 
