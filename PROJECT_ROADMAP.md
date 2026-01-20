@@ -1,6 +1,6 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 6/103**
+**Progress: 7/103**
 
 ---
 
@@ -12,7 +12,7 @@
 - [x] **04. Lint** : ESLint strict config.
 - [x] **05. Format** : Prettier config.
 - [x] **06. Hooks** : Husky pre-commit.
-- [ ] **07. CSS** : Install Tailwind + Config.
+- [x] **07. CSS** : Install Tailwind + Config.
 - [ ] **08. Colors** : Theme Token "Dark Mode" (Variables CSS).
 - [ ] **09. Typo** : Font Inter integration.
 - [ ] **10. Structure** : Folders (atoms, molecules, organisms).
