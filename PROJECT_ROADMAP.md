@@ -1,6 +1,6 @@
 # PROJECT ROADMAP - Swipy
 
-**Progress: 13/103**
+**Progress: 14/103**
 
 ---
 
@@ -22,7 +22,7 @@
 - [x] **11. Model Question** : TS Interface (Generic).
 - [x] **12. Model User** : TS Interface (Profile).
 - [x] **13. Validation** : Zod schemas.
-- [ ] **14. Mocking** : Generator Script (100 items).
+- [x] **14. Mocking** : Generator Script (100 items).
 - [ ] **15. Store** : Zustand setup.
 - [ ] **16. Persist** : LocalStorage logic.
 - [ ] **17. Selectors** : Optimize re-renders.
