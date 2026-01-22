@@ -11,6 +11,7 @@ import { OnboardingPage } from '../pages/Onboarding'
 import { FunFactsPage } from '../pages/FunFacts'
 import { NotesInputPage } from '../pages/NotesInput'
 import { FlashcardsPlayerPage } from '../pages/FlashcardsPlayer'
+import { TriviaQuizPage } from '../pages/TriviaQuiz'
 import { RalphMascot } from '../components/ralph/RalphMascot'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -143,6 +144,14 @@ export function AppRouter() {
           element={
             <ProtectedRoute>
               <FlashcardsPlayerPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/trivia"
+          element={
+            <ProtectedRoute>
+              <TriviaQuizPage />
             </ProtectedRoute>
           }
         />

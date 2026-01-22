@@ -1,34 +1,14 @@
 import { useState, useEffect, useCallback } from 'react'
 import { AnimatePresence, motion, PanInfo, useMotionValue, useTransform } from 'framer-motion'
-import { Bookmark, RefreshCw, Sparkles, X, Heart, ExternalLink, Loader2 } from 'lucide-react'
+import { Bookmark, RefreshCw, Sparkles, X, Loader2 } from 'lucide-react'
 import { TopBar } from '../components/layout/TopBar'
 import { BottomNav } from '../components/layout/BottomNav'
-import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
-
-// Types for fun facts
-interface FunFact {
-  id: string
-  fact: string
-  category?: string
-  source?: string
-}
+import { fetchMultipleFacts, type FunFact } from '../services/apis'
 
 // Local storage keys
 const SAVED_FACTS_KEY = 'genius_saved_funfacts'
 const SEEN_FACTS_KEY = 'genius_seen_funfacts'
-
-// API Ninja categories for variety
-const API_CATEGORIES = ['science', 'history', 'nature', 'geography', 'general']
-
-// Fallback facts in case API fails
-const fallbackFacts: FunFact[] = [
-  { id: 'fb1', fact: 'Le miel ne perime jamais. Des pots de miel vieux de 3000 ans ont ete trouves dans des tombes egyptiennes et etaient toujours comestibles.', category: 'science' },
-  { id: 'fb2', fact: 'Les dauphins dorment avec un oeil ouvert pour rester vigilants face aux predateurs.', category: 'nature' },
-  { id: 'fb3', fact: 'La Tour Eiffel peut grandir de 15 cm en ete a cause de la dilatation thermique du metal.', category: 'science' },
-  { id: 'fb4', fact: 'Les pieuvres ont trois coeurs et du sang bleu.', category: 'nature' },
-  { id: 'fb5', fact: 'Venus est la seule planete du systeme solaire qui tourne dans le sens inverse des autres.', category: 'science' },
-]
 
 // Single Swipeable Card Component
 function SwipeableCard({
@@ -171,41 +151,22 @@ export function FunFactsPage() {
     }
   }, [])
 
-  // Fetch facts from API
+  // Fetch facts from multiple APIs
   const fetchFacts = useCallback(async () => {
     setLoading(true)
     setError(null)
 
     try {
-      // Try API Ninja first (free tier: 10k requests/month)
-      const response = await fetch('https://api.api-ninjas.com/v1/facts?limit=10', {
-        headers: {
-          'X-Api-Key': import.meta.env.VITE_API_NINJA_KEY || 'demo'
-        }
-      })
+      const newFacts = await fetchMultipleFacts(10)
+      setFacts(newFacts)
 
-      if (!response.ok) {
-        throw new Error('API request failed')
-      }
-
-      const data = await response.json()
-
-      if (data && data.length > 0) {
-        const newFacts: FunFact[] = data.map((item: { fact: string }, index: number) => ({
-          id: `api-${Date.now()}-${index}`,
-          fact: item.fact,
-          category: API_CATEGORIES[Math.floor(Math.random() * API_CATEGORIES.length)],
-          source: 'API Ninjas'
-        }))
-        setFacts(newFacts)
-      } else {
-        throw new Error('No facts returned')
+      // Check if using fallback
+      if (newFacts.every(f => f.source === 'local')) {
+        setError('Mode hors-ligne. Connecte-toi pour plus de faits !')
       }
     } catch (err) {
       console.error('API Error:', err)
-      // Use fallback facts
-      setFacts(fallbackFacts.map(f => ({ ...f, id: `fb-${Date.now()}-${f.id}` })))
-      setError('Using offline facts. Connect to internet for more!')
+      setError('Erreur de chargement. Reessaie plus tard.')
     } finally {
       setLoading(false)
     }

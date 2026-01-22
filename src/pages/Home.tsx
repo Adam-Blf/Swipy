@@ -1,6 +1,7 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { Play, Sparkles, FileText, GraduationCap, Crown, TrendingUp } from 'lucide-react'
+import { Play, Sparkles, FileText, GraduationCap, Crown, TrendingUp, Brain, Quote, BookOpen, Loader2 } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
@@ -8,10 +9,63 @@ import { RalphMascot } from '../components/ralph/RalphMascot'
 import { TopBar } from '../components/layout/TopBar'
 import { BottomNav } from '../components/layout/BottomNav'
 import { useAuth } from '../contexts/AuthContext'
+import { fetchRandomQuote, getWordOfTheDay, type Quote as QuoteType, type WordDefinition } from '../services/apis'
 
 export function HomePage() {
   const navigate = useNavigate()
   const { profile } = useAuth()
+  const [quote, setQuote] = useState<QuoteType | null>(null)
+  const [wordOfDay, setWordOfDay] = useState<WordDefinition | null>(null)
+  const [loadingQuote, setLoadingQuote] = useState(true)
+  const [loadingWord, setLoadingWord] = useState(true)
+
+  // Fetch quote and word of the day
+  useEffect(() => {
+    const loadDailyContent = async () => {
+      // Check localStorage for cached data (refresh once per day)
+      const today = new Date().toDateString()
+      const cachedQuote = localStorage.getItem('genius_daily_quote')
+      const cachedWord = localStorage.getItem('genius_daily_word')
+      const cachedDate = localStorage.getItem('genius_daily_date')
+
+      if (cachedDate === today && cachedQuote) {
+        try {
+          setQuote(JSON.parse(cachedQuote))
+          setLoadingQuote(false)
+        } catch { /* ignore */ }
+      } else {
+        try {
+          const q = await fetchRandomQuote()
+          setQuote(q)
+          localStorage.setItem('genius_daily_quote', JSON.stringify(q))
+          localStorage.setItem('genius_daily_date', today)
+        } catch (e) {
+          console.error('Error fetching quote:', e)
+        }
+        setLoadingQuote(false)
+      }
+
+      if (cachedDate === today && cachedWord) {
+        try {
+          setWordOfDay(JSON.parse(cachedWord))
+          setLoadingWord(false)
+        } catch { /* ignore */ }
+      } else {
+        try {
+          const w = await getWordOfTheDay()
+          setWordOfDay(w)
+          if (w) {
+            localStorage.setItem('genius_daily_word', JSON.stringify(w))
+          }
+        } catch (e) {
+          console.error('Error fetching word:', e)
+        }
+        setLoadingWord(false)
+      }
+    }
+
+    loadDailyContent()
+  }, [])
 
   const dailyGoal = {
     current: profile?.xp_total ? Math.min(profile.xp_total % 50, 50) : 0,
@@ -27,6 +81,14 @@ export function HomePage() {
       icon: Sparkles,
       color: 'from-amber-500 to-orange-600',
       path: '/funfacts'
+    },
+    {
+      id: 'trivia',
+      title: 'Trivia Quiz',
+      description: 'Teste tes connaissances',
+      icon: Brain,
+      color: 'from-indigo-500 to-violet-600',
+      path: '/trivia'
     },
     {
       id: 'notes',
@@ -195,11 +257,86 @@ export function HomePage() {
           </div>
         </motion.div>
 
-        {/* Categories preview */}
+        {/* Quote of the Day */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.7 }}
+          className="mb-6"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <Quote className="w-5 h-5 text-amber-400" />
+            <h2 className="text-lg font-semibold text-white">Citation du jour</h2>
+          </div>
+
+          <Card variant="glass" padding="lg" className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+            {loadingQuote ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader2 className="w-6 h-6 text-amber-400 animate-spin" />
+              </div>
+            ) : quote ? (
+              <div>
+                <p className="text-white italic leading-relaxed mb-3">"{quote.content}"</p>
+                <p className="text-amber-400 text-sm font-medium text-right">- {quote.author}</p>
+              </div>
+            ) : (
+              <p className="text-gray-400 text-center">Citation non disponible</p>
+            )}
+          </Card>
+        </motion.div>
+
+        {/* Word of the Day */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="mb-6"
+        >
+          <div className="flex items-center gap-2 mb-3">
+            <BookOpen className="w-5 h-5 text-cyan-400" />
+            <h2 className="text-lg font-semibold text-white">Mot du jour</h2>
+          </div>
+
+          <Card variant="glass" padding="lg" className="bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-500/20">
+            {loadingWord ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader2 className="w-6 h-6 text-cyan-400 animate-spin" />
+              </div>
+            ) : wordOfDay ? (
+              <div>
+                <div className="flex items-baseline gap-3 mb-2">
+                  <h3 className="text-xl font-bold text-white capitalize">{wordOfDay.word}</h3>
+                  {wordOfDay.phonetic && (
+                    <span className="text-cyan-400 text-sm">{wordOfDay.phonetic}</span>
+                  )}
+                </div>
+                {wordOfDay.meanings[0] && (
+                  <div>
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 mb-2 inline-block">
+                      {wordOfDay.meanings[0].partOfSpeech}
+                    </span>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      {wordOfDay.meanings[0].definitions[0]?.definition}
+                    </p>
+                    {wordOfDay.meanings[0].definitions[0]?.example && (
+                      <p className="text-gray-500 text-xs mt-2 italic">
+                        Ex: "{wordOfDay.meanings[0].definitions[0].example}"
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <p className="text-gray-400 text-center">Mot non disponible</p>
+            )}
+          </Card>
+        </motion.div>
+
+        {/* Categories preview */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.9 }}
         >
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-semibold text-white">Categories</h2>
@@ -224,7 +361,7 @@ export function HomePage() {
                 key={cat.name}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.8 + i * 0.05 }}
+                transition={{ delay: 1.0 + i * 0.05 }}
                 onClick={() => navigate('/learn')}
                 className={`p-4 rounded-2xl bg-gradient-to-br ${cat.color} text-white text-center`}
               >
