@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'icons/*.png', 'sounds/*.mp3'],
+      includeAssets: ['favicon.ico', 'icon-*.png', 'sounds/*.mp3'],
       manifest: {
         name: 'Genius - Culture Générale',
         short_name: 'Genius',
@@ -19,20 +19,16 @@ export default defineConfig({
         orientation: 'portrait',
         icons: [
           {
-            src: '/icons/ralph-192.png',
+            src: '/icon-192x192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any maskable'
           },
           {
-            src: '/icons/ralph-512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          },
-          {
-            src: '/icons/ralph-maskable.png',
+            src: '/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'maskable'
+            purpose: 'any maskable'
           }
         ]
       },
