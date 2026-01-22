@@ -109,7 +109,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-900 text-white flex flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 safe-area-top">
+      <header className="flex items-center justify-between px-4 py-3 pt-12 safe-area-top">
         <div className="flex items-center gap-2">
           <span className="text-3xl">🐘</span>
           <span className="text-xl font-bold text-gradient">Genius</span>
