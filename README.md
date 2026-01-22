@@ -1,11 +1,12 @@
-# Genius - Quiz Culture Generale PWA
+# Genius - Plateforme d'Apprentissage Gamifiee
 
 ![Status](https://img.shields.io/badge/status-in%20development-yellow)
 ![PWA](https://img.shields.io/badge/PWA-ready-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-green)
 
 ## Description
 
-Genius est une PWA gamifiee style Duolingo pour apprendre la culture generale. Avec Ralph l'elephant bleu comme mascotte, les utilisateurs progressent a travers des quiz thematiques et gagnent de l'XP.
+Genius est une PWA gamifiee style Duolingo pour apprendre la culture generale et reviser ses cours. Avec Ralph comme mascotte, les utilisateurs progressent a travers des quiz thematiques, decouvrent des fun facts, et generent des flashcards a partir de leurs notes grace a l'IA.
 
 ## Demo
 
@@ -13,26 +14,43 @@ Genius est une PWA gamifiee style Duolingo pour apprendre la culture generale. A
 
 ## Features
 
+### Core Features
 - [x] PWA avec Service Worker (fonctionne offline)
 - [x] Authentification Google OAuth via Supabase
-- [x] Mascotte Ralph animee (6 humeurs)
+- [x] Mascotte Ralph avec image reelle et animations soignees
 - [x] Systeme de vies (5 coeurs, regeneration 30min)
 - [x] XP et systeme de streak
-- [x] Categories: Histoire, Sciences, Geographie, Arts, Sports, Divertissement
-- [x] Questions avec explications
 - [x] Leaderboard et classement
+
+### Nouveautes v2.0
+- [x] **Fun Facts Swipe** - Decouvre +10,000 faits incroyables avec swipe Tinder-style
+- [x] **Revision IA** - Colle tes cours et genere automatiquement des flashcards
+- [x] **Flashcards Player** - Revise avec un systeme de memorisation espacee
+- [x] **API Integration** - Connexion API Ninja pour les fun facts
+- [x] **LLM Integration** - OpenAI GPT-3.5 pour la generation de flashcards
+- [x] **Navigation 5 onglets** - Home, Fun Facts, Revision, Flashcards, Profil
+
+### Quiz & Categories
+- [x] Histoire, Sciences, Geographie, Arts, Sports, Divertissement
+- [x] Questions avec explications detaillees
 - [x] Mode Premium (Stripe ready)
+
+### Coming Soon
 - [ ] Ligues hebdomadaires
 - [ ] Systeme d'amis
+- [ ] Mode hors-ligne pour flashcards
+- [ ] Export PDF des flashcards
 
 ## Tech Stack
 
-- **Frontend**: React 18, TypeScript, Vite
+- **Frontend**: React 19, TypeScript, Vite 7
 - **Styling**: Tailwind CSS v4
 - **Animations**: Framer Motion
 - **Auth/DB**: Supabase
 - **PWA**: VitePWA
 - **Icons**: Lucide React
+- **AI**: OpenAI API (optionnel)
+- **Facts API**: API Ninjas
 - **Deployment**: Vercel
 
 ## Installation
@@ -47,38 +65,80 @@ npm install
 
 # Configurer les variables d'environnement
 cp .env.example .env.local
-# Editer .env.local avec vos credentials Supabase
+# Editer .env.local avec vos credentials
 
 # Lancer en dev
 npm run dev
 ```
 
-## Configuration Supabase
+## Variables d'Environnement
 
-1. Creer un projet sur [supabase.com](https://supabase.com)
-2. Executer le schema SQL dans `supabase/schema.sql`
-3. Activer Google Auth dans Authentication > Providers
-4. Configurer les credentials dans `.env.local`
+```env
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_API_NINJA_KEY=your_api_ninja_key (optionnel)
+VITE_OPENAI_API_KEY=your_openai_key (optionnel)
+```
 
 ## Structure du Projet
 
 ```
 src/
   components/
-    ui/          # Composants UI reutilisables
+    ui/          # Composants UI reutilisables (Button, Card, Badge...)
     layout/      # TopBar, BottomNav
-    ralph/       # Mascotte animee
+    ralph/       # Mascotte animee avec ralph.png
     lesson/      # Composants de quiz
   contexts/      # AuthContext, GameContext
-  pages/         # Pages de l'app
+  pages/
+    Home.tsx         # Accueil avec acces rapide
+    FunFacts.tsx     # Swipe de fun facts
+    NotesInput.tsx   # Saisie de notes + generation IA
+    FlashcardsPlayer.tsx  # Lecture des flashcards
+    Profile.tsx      # Profil utilisateur
+    Learn.tsx        # Categories de quiz
+    Lesson.tsx       # Session de quiz
+  routes/        # React Router configuration
   services/      # Supabase, heartService
   types/         # Types TypeScript
   hooks/         # Custom hooks
+  data/          # Donnees locales (facts.ts)
 ```
+
+## Ecrans Principaux
+
+| Ecran | Route | Description |
+|-------|-------|-------------|
+| Home | `/` | Dashboard avec XP, streak, acces rapide |
+| Fun Facts | `/funfacts` | Swipe de faits avec sauvegarde |
+| Notes | `/notes` | Saisie de cours pour flashcards IA |
+| Flashcards | `/flashcards` | Player de revision |
+| Profile | `/profile` | Stats, settings, deconnexion |
+
+## API Integration
+
+### Fun Facts (API Ninjas)
+- Endpoint: `https://api.api-ninjas.com/v1/facts`
+- Rate limit: 10,000 requests/mois (gratuit)
+- Fallback: facts locaux si API indisponible
+
+### OpenAI (Optionnel)
+- Model: GPT-3.5 Turbo
+- Usage: Generation de flashcards depuis notes
+- Fallback: generation locale basique
 
 ## Changelog
 
-### 2025-01-22
+### 2025-01-22 - v2.0.0
+- **NEW**: Page Fun Facts avec swipe cards et API externe
+- **NEW**: Page Revision avec generation de flashcards IA
+- **NEW**: Page Flashcards Player avec memorisation
+- **NEW**: Navigation 5 onglets
+- **UPDATE**: Mascotte Ralph utilise maintenant l'image reelle
+- **UPDATE**: Animations ameliorees sur toutes les pages
+- **UPDATE**: Home redesignee avec acces aux nouvelles features
+
+### 2025-01-22 - v1.0.0
 - Deploiement Vercel initial
 - Integration Supabase (schema complet)
 - PWA fonctionnelle avec offline support

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Home, BookOpen, Trophy, User } from 'lucide-react'
+import { Home, Sparkles, FileText, GraduationCap, User } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 interface NavItem {
@@ -11,8 +11,9 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { path: '/', label: 'Accueil', icon: <Home className="w-6 h-6" /> },
-  { path: '/learn', label: 'Apprendre', icon: <BookOpen className="w-6 h-6" /> },
-  { path: '/leaderboard', label: 'Classement', icon: <Trophy className="w-6 h-6" /> },
+  { path: '/funfacts', label: 'Fun Facts', icon: <Sparkles className="w-6 h-6" /> },
+  { path: '/notes', label: 'Revision', icon: <FileText className="w-6 h-6" /> },
+  { path: '/flashcards', label: 'Flashcards', icon: <GraduationCap className="w-6 h-6" /> },
   { path: '/profile', label: 'Profil', icon: <User className="w-6 h-6" /> }
 ]
 
@@ -39,7 +40,7 @@ export function BottomNav() {
               {isActive && (
                 <motion.div
                   layoutId="bottomNavIndicator"
-                  className="absolute -top-0.5 w-12 h-1 bg-primary-500 rounded-full"
+                  className="absolute -top-0.5 w-10 h-1 bg-primary-500 rounded-full"
                   transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
               )}
@@ -52,7 +53,7 @@ export function BottomNav() {
               </motion.div>
 
               <span className={cn(
-                'text-xs mt-1 font-medium',
+                'text-[10px] mt-0.5 font-medium',
                 isActive ? 'text-primary-400' : 'text-gray-500'
               )}>
                 {item.label}

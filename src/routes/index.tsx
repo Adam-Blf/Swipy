@@ -8,6 +8,9 @@ import { LeaderboardPage } from '../pages/Leaderboard'
 import { ProfilePage } from '../pages/Profile'
 import { PremiumPage } from '../pages/Premium'
 import { OnboardingPage } from '../pages/Onboarding'
+import { FunFactsPage } from '../pages/FunFacts'
+import { NotesInputPage } from '../pages/NotesInput'
+import { FlashcardsPlayerPage } from '../pages/FlashcardsPlayer'
 import { RalphMascot } from '../components/ralph/RalphMascot'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -114,6 +117,32 @@ export function AppRouter() {
           element={
             <ProtectedRoute>
               <OnboardingPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* New Learning Routes */}
+        <Route
+          path="/funfacts"
+          element={
+            <ProtectedRoute>
+              <FunFactsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notes"
+          element={
+            <ProtectedRoute>
+              <NotesInputPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/flashcards"
+          element={
+            <ProtectedRoute>
+              <FlashcardsPlayerPage />
             </ProtectedRoute>
           }
         />

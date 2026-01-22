@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { Play, TrendingUp, Users, Crown } from 'lucide-react'
+import { Play, Sparkles, FileText, GraduationCap, Crown, TrendingUp } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
@@ -18,12 +18,40 @@ export function HomePage() {
     target: 50
   }
 
+  // Feature cards for the new learning sections
+  const features = [
+    {
+      id: 'funfacts',
+      title: 'Fun Facts',
+      description: 'Decouvre +10,000 faits incroyables',
+      icon: Sparkles,
+      color: 'from-amber-500 to-orange-600',
+      path: '/funfacts'
+    },
+    {
+      id: 'notes',
+      title: 'Revision IA',
+      description: 'Transforme tes cours en flashcards',
+      icon: FileText,
+      color: 'from-blue-500 to-cyan-600',
+      path: '/notes'
+    },
+    {
+      id: 'flashcards',
+      title: 'Flashcards',
+      description: 'Revise et memorise efficacement',
+      icon: GraduationCap,
+      color: 'from-purple-500 to-pink-600',
+      path: '/flashcards'
+    }
+  ]
+
   return (
     <div className="min-h-screen bg-genius-bg pb-20 pt-16">
       <TopBar />
 
       <div className="p-4 max-w-lg mx-auto">
-        {/* Welcome section */}
+        {/* Welcome section with Ralph */}
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -32,10 +60,10 @@ export function HomePage() {
           <RalphMascot mood="happy" size="sm" />
           <div>
             <h1 className="text-xl font-bold text-white">
-              Salut {profile?.display_name || 'Génie'} !
+              Salut {profile?.display_name || 'Genie'} !
             </h1>
             <p className="text-gray-400 text-sm">
-              Prêt à apprendre aujourd'hui ?
+              Pret a apprendre aujourd'hui ?
             </p>
           </div>
         </motion.div>
@@ -70,7 +98,7 @@ export function HomePage() {
               className="w-full"
               leftIcon={<Play className="w-5 h-5 fill-white" />}
             >
-              Commencer une leçon
+              Commencer une lecon
             </Button>
           </Card>
         </motion.div>
@@ -96,7 +124,7 @@ export function HomePage() {
                   <p className="text-2xl font-bold text-white">
                     {profile?.current_streak || 0}
                   </p>
-                  <p className="text-xs text-gray-500">Jours de série</p>
+                  <p className="text-xs text-gray-500">Jours de serie</p>
                 </div>
               </div>
             </Card>
@@ -126,14 +154,55 @@ export function HomePage() {
           </motion.div>
         </div>
 
-        {/* Categories preview */}
+        {/* New Learning Features */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.4 }}
+          className="mb-6"
         >
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-semibold text-white">Catégories</h2>
+            <h2 className="text-lg font-semibold text-white">Apprendre</h2>
+          </div>
+
+          <div className="space-y-3">
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.id}
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.5 + index * 0.1 }}
+              >
+                <Card
+                  variant="default"
+                  padding="none"
+                  interactive
+                  onClick={() => navigate(feature.path)}
+                >
+                  <div className="flex items-center gap-4 p-4">
+                    <div className={`p-3 rounded-xl bg-gradient-to-br ${feature.color}`}>
+                      <feature.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-semibold text-white">{feature.title}</h3>
+                      <p className="text-sm text-gray-400 truncate">{feature.description}</p>
+                    </div>
+                    <span className="text-gray-500 text-xl">&#8250;</span>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Categories preview */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.7 }}
+        >
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-lg font-semibold text-white">Categories</h2>
             <button
               onClick={() => navigate('/learn')}
               className="text-sm text-primary-400 hover:text-primary-300"
@@ -146,7 +215,7 @@ export function HomePage() {
             {[
               { name: 'Histoire', emoji: '📜', color: 'from-amber-500 to-orange-600' },
               { name: 'Sciences', emoji: '🔬', color: 'from-green-500 to-emerald-600' },
-              { name: 'Géo', emoji: '🌍', color: 'from-blue-500 to-cyan-600' },
+              { name: 'Geo', emoji: '🌍', color: 'from-blue-500 to-cyan-600' },
               { name: 'Arts', emoji: '🎨', color: 'from-purple-500 to-pink-600' },
               { name: 'Sports', emoji: '⚽', color: 'from-red-500 to-rose-600' },
               { name: 'Divers', emoji: '🎬', color: 'from-indigo-500 to-violet-600' }
@@ -155,7 +224,7 @@ export function HomePage() {
                 key={cat.name}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.5 + i * 0.05 }}
+                transition={{ delay: 0.8 + i * 0.05 }}
                 onClick={() => navigate('/learn')}
                 className={`p-4 rounded-2xl bg-gradient-to-br ${cat.color} text-white text-center`}
               >
@@ -164,27 +233,6 @@ export function HomePage() {
               </motion.button>
             ))}
           </div>
-        </motion.div>
-
-        {/* Friends activity (placeholder) */}
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="mt-6"
-        >
-          <Card variant="default" padding="md" interactive>
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-secondary-500/20 rounded-xl">
-                <Users className="w-6 h-6 text-secondary-400" />
-              </div>
-              <div className="flex-1">
-                <p className="font-medium text-white">Invite tes amis</p>
-                <p className="text-xs text-gray-500">Gagne 100 XP par ami invité</p>
-              </div>
-              <span className="text-2xl">→</span>
-            </div>
-          </Card>
         </motion.div>
       </div>
 
