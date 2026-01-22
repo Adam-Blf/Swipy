@@ -26,7 +26,6 @@ import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
 import { TopBar } from '../components/layout/TopBar'
 import { BottomNav } from '../components/layout/BottomNav'
-import { useAuth } from '../contexts/AuthContext'
 import { useFlashcards } from '../contexts/FlashcardContext'
 import { formatNumber } from '../lib/utils'
 import { calculateLevel } from '../types/flashcards'
@@ -145,7 +144,14 @@ function SessionItem({ session }: { session: any }) {
 
 export function ProfilePage() {
   const navigate = useNavigate()
-  const { profile, signOut } = useAuth()
+  // Mock profile data - no auth needed
+  const profile = {
+    display_name: 'Genie',
+    username: 'genius_user',
+    avatar_url: null,
+    is_premium: false,
+    hearts: 5
+  }
   const { gamification, stats, getRecentSessions, getUnlockedBadges, getNextBadges } = useFlashcards()
   const [activeTab, setActiveTab] = useState<'stats' | 'badges' | 'history'>('stats')
 
@@ -206,8 +212,8 @@ export function ProfilePage() {
   ]
 
   const handleSignOut = async () => {
-    await signOut()
-    navigate('/login')
+    // No auth, just redirect to home
+    navigate('/')
   }
 
   const tabs = [

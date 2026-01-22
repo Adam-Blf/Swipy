@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import { Heart, Flame, Zap } from 'lucide-react'
 import { Badge } from '../ui/Badge'
-import { useAuth } from '../../contexts/AuthContext'
 import { formatNumber } from '../../lib/utils'
 
 interface TopBarProps {
@@ -11,11 +10,10 @@ interface TopBarProps {
 }
 
 export function TopBar({ showBack, onBack, title }: TopBarProps) {
-  const { profile } = useAuth()
-
-  const hearts = profile?.hearts ?? 5
-  const streak = profile?.current_streak ?? 0
-  const xp = profile?.xp_total ?? 0
+  // Mock profile data - no auth needed
+  const hearts = 5
+  const streak = 0
+  const xp = 0
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-genius-bg/95 backdrop-blur-xl border-b border-genius-border safe-area-top z-40">

@@ -1,6 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
-import { LoginPage } from '../pages/Login'
 import { HomePage } from '../pages/Home'
 import { LearnPage } from '../pages/Learn'
 import { LessonPage } from '../pages/Lesson'
@@ -12,149 +10,25 @@ import { FunFactsPage } from '../pages/FunFacts'
 import { NotesInputPage } from '../pages/NotesInput'
 import { FlashcardsPlayerPage } from '../pages/FlashcardsPlayer'
 import { TriviaQuizPage } from '../pages/TriviaQuiz'
-import { RalphMascot } from '../components/ralph/RalphMascot'
-
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth()
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-genius-bg">
-        <RalphMascot mood="thinking" size="lg" />
-      </div>
-    )
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />
-  }
-
-  return <>{children}</>
-}
-
-function PublicRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth()
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-genius-bg">
-        <RalphMascot mood="thinking" size="lg" />
-      </div>
-    )
-  }
-
-  if (user) {
-    return <Navigate to="/" replace />
-  }
-
-  return <>{children}</>
-}
 
 export function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public routes */}
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <LoginPage />
-            </PublicRoute>
-          }
-        />
+        {/* All routes are now directly accessible */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/learn" element={<LearnPage />} />
+        <Route path="/lesson/:categoryId/:lessonId" element={<LessonPage />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/premium" element={<PremiumPage />} />
+        <Route path="/onboarding" element={<OnboardingPage />} />
 
-        {/* Protected routes */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/learn"
-          element={
-            <ProtectedRoute>
-              <LearnPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/lesson/:categoryId/:lessonId"
-          element={
-            <ProtectedRoute>
-              <LessonPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/leaderboard"
-          element={
-            <ProtectedRoute>
-              <LeaderboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/premium"
-          element={
-            <ProtectedRoute>
-              <PremiumPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/onboarding"
-          element={
-            <ProtectedRoute>
-              <OnboardingPage />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* New Learning Routes */}
-        <Route
-          path="/funfacts"
-          element={
-            <ProtectedRoute>
-              <FunFactsPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/notes"
-          element={
-            <ProtectedRoute>
-              <NotesInputPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/flashcards"
-          element={
-            <ProtectedRoute>
-              <FlashcardsPlayerPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/trivia"
-          element={
-            <ProtectedRoute>
-              <TriviaQuizPage />
-            </ProtectedRoute>
-          }
-        />
+        {/* Learning Routes */}
+        <Route path="/funfacts" element={<FunFactsPage />} />
+        <Route path="/notes" element={<NotesInputPage />} />
+        <Route path="/flashcards" element={<FlashcardsPlayerPage />} />
+        <Route path="/trivia" element={<TriviaQuizPage />} />
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

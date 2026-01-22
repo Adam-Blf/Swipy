@@ -5,7 +5,6 @@ import { ArrowRight, Check } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { RalphMascot } from '../components/ralph/RalphMascot'
-import { useAuth } from '../contexts/AuthContext'
 import { cn } from '../lib/utils'
 
 type Step = 'name' | 'level' | 'categories'
@@ -27,7 +26,6 @@ const categories = [
 
 export function OnboardingPage() {
   const navigate = useNavigate()
-  const { updateProfile } = useAuth()
 
   const [step, setStep] = useState<Step>('name')
   const [displayName, setDisplayName] = useState('')
@@ -43,9 +41,8 @@ export function OnboardingPage() {
     } else if (step === 'categories' && selectedCategories.length > 0) {
       setIsLoading(true)
       try {
-        await updateProfile({
-          display_name: displayName.trim()
-        })
+        // No auth, just save to localStorage
+        localStorage.setItem('genius_display_name', displayName.trim())
         navigate('/')
       } catch (error) {
         console.error('Failed to save preferences:', error)

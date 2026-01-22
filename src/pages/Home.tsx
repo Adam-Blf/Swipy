@@ -8,12 +8,16 @@ import { Badge } from '../components/ui/Badge'
 import { RalphMascot } from '../components/ralph/RalphMascot'
 import { TopBar } from '../components/layout/TopBar'
 import { BottomNav } from '../components/layout/BottomNav'
-import { useAuth } from '../contexts/AuthContext'
 import { fetchRandomQuote, getWordOfTheDay, type Quote as QuoteType, type WordDefinition } from '../services/apis'
 
 export function HomePage() {
   const navigate = useNavigate()
-  const { profile } = useAuth()
+  // Mock profile data - no auth needed
+  const profile = {
+    display_name: 'Genie',
+    xp_total: 0,
+    current_streak: 0
+  }
   const [quote, setQuote] = useState<QuoteType | null>(null)
   const [wordOfDay, setWordOfDay] = useState<WordDefinition | null>(null)
   const [loadingQuote, setLoadingQuote] = useState(true)
