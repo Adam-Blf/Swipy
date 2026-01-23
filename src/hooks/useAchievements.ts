@@ -42,7 +42,7 @@ export function useAchievements() {
       totalCards: userStats?.totalCards || 0,
       savedCards: savedFacts,
       currentStreak: userStats?.currentStreak || 0,
-      maxStreak: userStats?.maxStreak || 0,
+      maxStreak: userStats?.longestStreak || 0,
       totalXP: userStats?.totalXP || 0,
       quizPerfectScores: 0, // TODO: Add quiz tracking
       categoriesExplored: categoriesViewed as string[],

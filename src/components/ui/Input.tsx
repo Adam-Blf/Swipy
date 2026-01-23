@@ -100,8 +100,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'disabled:opacity-50 disabled:cursor-not-allowed',
               sizeStyles[size],
               stateStyles[state],
-              leftIcon && 'pl-10',
-              (rightIcon || isPassword || (clearable && hasValue)) && 'pr-10',
+              leftIcon ? 'pl-10' : '',
+              (rightIcon || isPassword || (clearable && hasValue)) ? 'pr-10' : '',
               className
             )}
             {...props}
