@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-active-green)
 ![PWA](https://img.shields.io/badge/PWA-ready-blue)
-![Version](https://img.shields.io/badge/version-3.1.0-green)
+![Version](https://img.shields.io/badge/version-3.2.0-green)
 
 ## Description
 
@@ -136,8 +136,7 @@ src/
     ErrorBoundary.tsx
   contexts/
     AuthContext.tsx
-    GameContext.tsx
-    UserDataContext.tsx    # Nouveau contexte local-first
+    UserDataContext.tsx    # Contexte local-first principal
     FlashcardContext.tsx
     OnboardingContext.tsx  # Gestion etat onboarding
   pages/
@@ -222,6 +221,14 @@ Accedez a Settings > Generation IA pour configurer un provider:
 - Fallback: contenu local si aucun provider configure
 
 ## Changelog
+
+### 2026-01-23 - v3.2.0
+- **CLEANUP**: Suppression des fichiers obsoletes (App.css, react.svg, vite.svg)
+- **CLEANUP**: Suppression du contexte AppContext.tsx (remplace par UserDataContext)
+- **CLEANUP**: Suppression de GameContext.tsx et useGameEngine.ts (non utilises)
+- **CLEANUP**: Suppression du dossier context/ vide
+- **UPDATE**: Documentation mise a jour
+- **FIX**: Structure du projet optimisee
 
 ### 2025-01-23 - v3.1.0
 - **NEW**: Onboarding Flow complet pour premiere utilisation
