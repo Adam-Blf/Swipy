@@ -1,24 +1,62 @@
 {
-  "name": "Genius - Culture Générale",
+  "name": "Genius - Culture Generale",
   "short_name": "Genius",
-  "description": "Apprends la culture générale de manière ludique avec Ralph, ton compagnon éléphant !",
+  "description": "Apprends la culture generale de maniere ludique avec Ralph, ton compagnon elephant !",
   "start_url": "/",
+  "id": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "theme_color": "#4364F7",
   "background_color": "#0F172A",
+  "scope": "/",
   "icons": [
     {
       "src": "/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Fun Facts",
+      "short_name": "Facts",
+      "description": "Decouvre des faits fascinants",
+      "url": "/funfacts",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Flashcards",
+      "short_name": "Cards",
+      "description": "Revise avec les flashcards",
+      "url": "/flashcards",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Quiz Trivia",
+      "short_name": "Quiz",
+      "description": "Teste tes connaissances",
+      "url": "/trivia",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
     }
   ],
   "screenshots": [
@@ -26,9 +64,15 @@
       "src": "/screenshots/home.png",
       "sizes": "1080x1920",
       "type": "image/png",
-      "form_factor": "narrow"
+      "form_factor": "narrow",
+      "label": "Page d'accueil Genius"
     }
   ],
-  "categories": ["education", "games"],
-  "lang": "fr"
+  "categories": ["education", "games", "entertainment"],
+  "lang": "fr",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }
