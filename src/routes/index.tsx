@@ -5,6 +5,8 @@ import { UserDataProvider } from '../contexts/UserDataContext'
 import { OnboardingProvider } from '../contexts/OnboardingContext'
 import { ErrorBoundary } from '../components/ErrorBoundary'
 import { OnboardingGuard } from '../components/OnboardingGuard'
+import { ToastProvider } from '../components/ui/Toast'
+import { ConfettiProvider } from '../components/ui/Confetti'
 
 // Lazy load pages to avoid circular dependencies
 import { lazy, Suspense } from 'react'
@@ -37,11 +39,13 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <ErrorBoundary>
-        <OnboardingProvider>
-          <UserDataProvider>
-            <FlashcardProvider>
-              <Suspense fallback={<LoadingScreen />}>
-                <Routes>
+        <ToastProvider>
+          <ConfettiProvider>
+            <OnboardingProvider>
+              <UserDataProvider>
+                <FlashcardProvider>
+                  <Suspense fallback={<LoadingScreen />}>
+                    <Routes>
                   {/* Onboarding Flow - First Launch Tutorial */}
                   <Route path="/welcome" element={<OnboardingFlowPage />} />
 
@@ -107,13 +111,15 @@ export function AppRouter() {
                     </OnboardingGuard>
                   } />
 
-                  {/* Fallback */}
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </Suspense>
-            </FlashcardProvider>
-          </UserDataProvider>
-        </OnboardingProvider>
+                    {/* Fallback */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                  </Suspense>
+                </FlashcardProvider>
+              </UserDataProvider>
+            </OnboardingProvider>
+          </ConfettiProvider>
+        </ToastProvider>
       </ErrorBoundary>
     </BrowserRouter>
   )
