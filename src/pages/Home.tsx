@@ -9,12 +9,15 @@ import { RalphMascot } from '../components/ralph/RalphMascot'
 import { TopBar } from '../components/layout/TopBar'
 import { BottomNav } from '../components/layout/BottomNav'
 import { fetchRandomQuote, getWordOfTheDay, type Quote as QuoteType, type WordDefinition } from '../services/apis'
+import { useUserData } from '../contexts/UserDataContext'
 
 export function HomePage() {
   const navigate = useNavigate()
-  // Mock profile data - no auth needed
+  const { profile: userProfile } = useUserData()
+
+  // Use user profile data with fallbacks
   const profile = {
-    display_name: 'Genie',
+    display_name: userProfile.nickname || localStorage.getItem('genius_display_name') || 'Genie',
     xp_total: 0,
     current_streak: 0
   }

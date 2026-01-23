@@ -23,11 +23,14 @@ import {
   Globe,
   Trash2,
   AlertTriangle,
-  Cpu
+  Cpu,
+  RotateCcw,
+  GraduationCap
 } from 'lucide-react'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { useUserData } from '../contexts/UserDataContext'
+import { useOnboardingContext } from '../contexts/OnboardingContext'
 import { useLLM } from '../hooks/useLLM'
 import type { LLMProvider } from '../types/llm'
 import { LLM_MODELS } from '../types/llm'
@@ -68,6 +71,7 @@ const PROVIDER_INFO = {
 export function SettingsPage() {
   const navigate = useNavigate()
   const { preferences, updatePreferences, clearAllData } = useUserData()
+  const { resetOnboarding } = useOnboardingContext()
   const { config, isConfigured, setProvider, testConnection, isLoading, error } = useLLM()
 
   const [selectedProvider, setSelectedProvider] = useState<LLMProvider>(
@@ -100,8 +104,14 @@ export function SettingsPage() {
 
   const handleClearData = () => {
     clearAllData()
+    resetOnboarding()
     setShowClearConfirm(false)
-    navigate('/')
+    navigate('/welcome')
+  }
+
+  const handleReplayTutorial = () => {
+    resetOnboarding()
+    navigate('/welcome')
   }
 
   const availableModels = LLM_MODELS[selectedProvider] || []
@@ -352,7 +362,7 @@ export function SettingsPage() {
             </div>
 
             {/* Language */}
-            <div className="flex items-center justify-between p-4">
+            <div className="flex items-center justify-between p-4 border-b border-white/5">
               <div className="flex items-center gap-3">
                 <Globe className="w-5 h-5 text-blue-400" />
                 <div>
@@ -368,6 +378,26 @@ export function SettingsPage() {
                 <option value="fr">Francais</option>
                 <option value="en">English</option>
               </select>
+            </div>
+
+            {/* Replay Tutorial */}
+            <div className="flex items-center justify-between p-4">
+              <div className="flex items-center gap-3">
+                <GraduationCap className="w-5 h-5 text-purple-400" />
+                <div>
+                  <p className="text-sm font-medium text-white">Tutoriel</p>
+                  <p className="text-xs text-gray-500">Revoir l'introduction</p>
+                </div>
+              </div>
+              <Button
+                onClick={handleReplayTutorial}
+                variant="ghost"
+                size="sm"
+                className="text-purple-400 hover:bg-purple-500/10"
+              >
+                <RotateCcw className="w-4 h-4 mr-2" />
+                Revoir
+              </Button>
             </div>
           </Card>
         </motion.div>

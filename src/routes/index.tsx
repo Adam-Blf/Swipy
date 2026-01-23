@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { FunFactsPage } from '../pages/FunFacts'
 import { FlashcardProvider } from '../contexts/FlashcardContext'
 import { UserDataProvider } from '../contexts/UserDataContext'
+import { OnboardingProvider } from '../contexts/OnboardingContext'
 import { ErrorBoundary } from '../components/ErrorBoundary'
+import { OnboardingGuard } from '../components/OnboardingGuard'
 
 // Lazy load pages to avoid circular dependencies
 import { lazy, Suspense } from 'react'
@@ -14,6 +16,7 @@ const LeaderboardPage = lazy(() => import('../pages/Leaderboard').then(m => ({ d
 const ProfilePage = lazy(() => import('../pages/Profile').then(m => ({ default: m.ProfilePage })))
 const PremiumPage = lazy(() => import('../pages/Premium').then(m => ({ default: m.PremiumPage })))
 const OnboardingPage = lazy(() => import('../pages/Onboarding').then(m => ({ default: m.OnboardingPage })))
+const OnboardingFlowPage = lazy(() => import('../pages/OnboardingFlow').then(m => ({ default: m.OnboardingFlowPage })))
 const NotesInputPage = lazy(() => import('../pages/NotesInput').then(m => ({ default: m.NotesInputPage })))
 const FlashcardsPlayerPage = lazy(() => import('../pages/FlashcardsPlayer').then(m => ({ default: m.FlashcardsPlayerPage })))
 const TriviaQuizPage = lazy(() => import('../pages/TriviaQuiz').then(m => ({ default: m.TriviaQuizPage })))
@@ -21,8 +24,11 @@ const SettingsPage = lazy(() => import('../pages/Settings').then(m => ({ default
 
 function LoadingScreen() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-600 to-purple-700">
-      <div className="text-white text-xl">Chargement...</div>
+    <div className="min-h-screen flex items-center justify-center bg-genius-bg">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-12 h-12 border-4 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
+        <div className="text-white text-lg font-medium">Chargement...</div>
+      </div>
     </div>
   )
 }
@@ -31,32 +37,83 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <ErrorBoundary>
-        <UserDataProvider>
-          <FlashcardProvider>
-            <Suspense fallback={<LoadingScreen />}>
-              <Routes>
-                {/* All routes are now directly accessible */}
-                <Route path="/" element={<HomePage />} />
-                <Route path="/learn" element={<LearnPage />} />
-                <Route path="/lesson/:categoryId/:lessonId" element={<LessonPage />} />
-                <Route path="/leaderboard" element={<LeaderboardPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/premium" element={<PremiumPage />} />
-                <Route path="/onboarding" element={<OnboardingPage />} />
-                <Route path="/settings" element={<SettingsPage />} />
+        <OnboardingProvider>
+          <UserDataProvider>
+            <FlashcardProvider>
+              <Suspense fallback={<LoadingScreen />}>
+                <Routes>
+                  {/* Onboarding Flow - First Launch Tutorial */}
+                  <Route path="/welcome" element={<OnboardingFlowPage />} />
 
-                {/* Learning Routes */}
-                <Route path="/funfacts" element={<FunFactsPage />} />
-                <Route path="/notes" element={<NotesInputPage />} />
-                <Route path="/flashcards" element={<FlashcardsPlayerPage />} />
-                <Route path="/trivia" element={<TriviaQuizPage />} />
+                  {/* Legacy onboarding page (for direct access) */}
+                  <Route path="/onboarding" element={<OnboardingPage />} />
 
-                {/* Fallback */}
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Suspense>
-          </FlashcardProvider>
-        </UserDataProvider>
+                  {/* Protected routes - require onboarding completion */}
+                  <Route path="/" element={
+                    <OnboardingGuard>
+                      <HomePage />
+                    </OnboardingGuard>
+                  } />
+                  <Route path="/learn" element={
+                    <OnboardingGuard>
+                      <LearnPage />
+                    </OnboardingGuard>
+                  } />
+                  <Route path="/lesson/:categoryId/:lessonId" element={
+                    <OnboardingGuard>
+                      <LessonPage />
+                    </OnboardingGuard>
+                  } />
+                  <Route path="/leaderboard" element={
+                    <OnboardingGuard>
+                      <LeaderboardPage />
+                    </OnboardingGuard>
+                  } />
+                  <Route path="/profile" element={
+                    <OnboardingGuard>
+                      <ProfilePage />
+                    </OnboardingGuard>
+                  } />
+                  <Route path="/premium" element={
+                    <OnboardingGuard>
+                      <PremiumPage />
+                    </OnboardingGuard>
+                  } />
+                  <Route path="/settings" element={
+                    <OnboardingGuard>
+                      <SettingsPage />
+                    </OnboardingGuard>
+                  } />
+
+                  {/* Learning Routes */}
+                  <Route path="/funfacts" element={
+                    <OnboardingGuard>
+                      <FunFactsPage />
+                    </OnboardingGuard>
+                  } />
+                  <Route path="/notes" element={
+                    <OnboardingGuard>
+                      <NotesInputPage />
+                    </OnboardingGuard>
+                  } />
+                  <Route path="/flashcards" element={
+                    <OnboardingGuard>
+                      <FlashcardsPlayerPage />
+                    </OnboardingGuard>
+                  } />
+                  <Route path="/trivia" element={
+                    <OnboardingGuard>
+                      <TriviaQuizPage />
+                    </OnboardingGuard>
+                  } />
+
+                  {/* Fallback */}
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </Suspense>
+            </FlashcardProvider>
+          </UserDataProvider>
+        </OnboardingProvider>
       </ErrorBoundary>
     </BrowserRouter>
   )
