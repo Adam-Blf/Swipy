@@ -18,14 +18,14 @@ interface PhysicsSwipeCardProps {
 
 // Spring physics configuration for realistic movement
 const springConfig = {
-  type: 'spring',
+  type: 'spring' as const,
   stiffness: 300,
   damping: 30,
   mass: 0.8
 }
 
 const throwConfig = {
-  type: 'spring',
+  type: 'spring' as const,
   stiffness: 200,
   damping: 20,
   mass: 0.5

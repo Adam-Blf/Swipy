@@ -237,11 +237,11 @@ export const dbHelpers = {
     return stats[0]
   },
 
-  async initializeUserStats(): Promise<number> {
+  async initializeUserStats(): Promise<number | undefined> {
     const existing = await this.getUserStats()
-    if (existing) return existing.id!
+    if (existing && existing.id !== undefined) return existing.id
 
-    return db.userStats.add({
+    const id = await db.userStats.add({
       totalXP: 0,
       level: 1,
       currentStreak: 0,
@@ -258,12 +258,15 @@ export const dbHelpers = {
         date: new Date().toISOString().split('T')[0]
       }
     })
+    return id
   },
 
-  async addXP(amount: number) {
+  async addXP(amount: number): Promise<number | undefined> {
     const stats = await this.getUserStats()
     if (!stats) {
       await this.initializeUserStats()
+      const newStats = await this.getUserStats()
+      if (!newStats || newStats.id === undefined) return undefined
       return this.addXP(amount)
     }
 
