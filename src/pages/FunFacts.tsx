@@ -1,11 +1,13 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Bookmark, RefreshCw, Sparkles, X, Loader2, Zap, Trophy, RotateCcw } from 'lucide-react'
+import { Bookmark, RefreshCw, Sparkles, X, Loader2, Zap, Trophy, RotateCcw, Star, Flame, TrendingUp } from 'lucide-react'
 import { TopBar } from '../components/layout/TopBar'
 import { BottomNav } from '../components/layout/BottomNav'
 import { Button } from '../components/ui/Button'
+import { Badge } from '../components/ui/Badge'
 import { GeniusCard, type GeniusCardRef } from '../components/GeniusCard'
 import { FABControls } from '../components/FABControls'
+import { FadeIn, SlideUp, ScaleIn, Pop } from '../components/transitions/PageTransition'
 import { fetchMultipleFacts, type FunFact } from '../services/apis'
 import { useSavedFacts, useUserStats } from '../hooks/useDatabase'
 import { facts as localFacts, categories, type Fact } from '../data/facts'
@@ -143,75 +145,133 @@ export function FunFactsPage() {
       <TopBar />
 
       <div className="p-4 max-w-lg mx-auto">
-        {/* Header with gradient */}
-        <motion.div
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="flex items-center justify-between mb-4"
-        >
-          <div className="flex items-center gap-3">
-            <motion.img
-              src="/ralph.png"
-              alt="Ralph"
-              className="w-14 h-14 object-contain drop-shadow-lg"
-              animate={{
-                y: [0, -5, 0],
-                rotate: [0, 2, -2, 0]
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-            <div>
-              <h1 className="text-xl font-bold text-gradient-blue flex items-center gap-2">
-                Fun Facts
-                {stats && stats.currentStreak > 0 && (
-                  <span className="flex items-center gap-1 text-sm bg-orange-500/20 text-orange-400 px-2 py-0.5 rounded-full">
-                    <Zap size={12} />
-                    {stats.currentStreak}
-                  </span>
+        {/* Header with gradient - Enhanced */}
+        <FadeIn>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <motion.div
+                className="relative"
+                animate={{
+                  y: [0, -5, 0],
+                  rotate: [0, 2, -2, 0]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                {/* Glow effect behind Ralph */}
+                <div className="absolute inset-0 bg-genius-cyan/30 blur-xl rounded-full" />
+                <img
+                  src="/ralph.png"
+                  alt="Ralph"
+                  className="relative w-14 h-14 object-contain drop-shadow-lg"
+                />
+              </motion.div>
+              <div>
+                <h1 className="text-xl font-bold text-gradient-blue flex items-center gap-2">
+                  Fun Facts
+                  {stats && stats.currentStreak > 0 && (
+                    <motion.span
+                      className="flex items-center gap-1 text-sm bg-gradient-to-r from-orange-500/20 to-amber-500/20 text-orange-400 px-2.5 py-1 rounded-full border border-orange-500/30"
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      <Flame size={12} className="text-orange-400" />
+                      {stats.currentStreak}j
+                    </motion.span>
+                  )}
+                </h1>
+                <p className="text-gray-400 text-sm">Decouvre le monde</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <motion.button
+                onClick={() => setShowSaved(true)}
+                className="relative flex items-center gap-1.5 bg-slate-800/80 backdrop-blur-sm px-3 py-2.5 rounded-xl border border-genius-cyan/30 hover:border-genius-cyan/60 transition-all group"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Bookmark size={18} className="text-genius-cyan group-hover:fill-genius-cyan/30 transition-colors" />
+                <span className="text-sm font-medium text-white">{savedFacts.length}</span>
+                {savedFacts.length > 0 && (
+                  <motion.div
+                    className="absolute -top-1 -right-1 w-2 h-2 bg-genius-cyan rounded-full"
+                    animate={{ scale: [1, 1.3, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
                 )}
-              </h1>
-              <p className="text-gray-400 text-sm">Decouvre le monde</p>
+              </motion.button>
+              <motion.button
+                onClick={resetProgress}
+                className="p-2.5 bg-slate-800/80 backdrop-blur-sm rounded-xl text-slate-400 hover:text-genius-cyan transition-colors border border-slate-700/50 hover:border-genius-cyan/30"
+                title="Recharger"
+                whileHover={{ scale: 1.05, rotate: 180 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ rotate: { duration: 0.3 } }}
+              >
+                <RefreshCw size={18} />
+              </motion.button>
             </div>
           </div>
+        </FadeIn>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setShowSaved(true)}
-              className="relative flex items-center gap-1.5 bg-slate-800/80 backdrop-blur-sm px-3 py-2 rounded-xl border border-slate-700/50 hover:border-[#00E5FF]/50 transition-colors"
+        {/* XP and Stats Bar with Blue accent - Enhanced */}
+        <SlideUp delay={0.1}>
+          <div className="flex items-center gap-3 text-sm mb-6 p-4 bg-gradient-to-r from-slate-900/80 to-slate-800/50 rounded-2xl border border-primary-500/20 backdrop-blur-sm relative overflow-hidden">
+            {/* Background shimmer */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-genius-cyan/5 to-transparent"
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
+            />
+
+            <motion.div
+              className="flex items-center gap-2 text-genius-cyan relative z-10"
+              whileHover={{ scale: 1.05 }}
             >
-              <Bookmark size={18} className="text-[#00E5FF]" />
-              <span className="text-sm font-medium text-white">{savedFacts.length}</span>
-            </button>
-            <button
-              onClick={resetProgress}
-              className="p-2 bg-slate-800/80 backdrop-blur-sm rounded-xl text-slate-400 hover:text-white transition-colors border border-slate-700/50"
-              title="Recharger"
+              <motion.div
+                animate={{ rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Sparkles size={16} />
+              </motion.div>
+              <span className="font-medium">{stats?.totalCards || 0}</span>
+              <span className="text-gray-400 text-xs">cartes</span>
+            </motion.div>
+
+            <div className="w-px h-4 bg-gray-700" />
+
+            <motion.div
+              className="flex items-center gap-2 text-primary-400 relative z-10"
+              whileHover={{ scale: 1.05 }}
             >
-              <RefreshCw size={18} />
-            </button>
-          </div>
-        </motion.div>
+              <Trophy size={16} />
+              <span className="font-medium">{stats?.totalXP || 0}</span>
+              <span className="text-gray-400 text-xs">XP</span>
+            </motion.div>
 
-        {/* XP and Stats Bar with Blue accent */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex items-center gap-4 text-sm mb-6 p-3 bg-slate-900/50 rounded-2xl border border-[#4364F7]/20"
-        >
-          <div className="flex items-center gap-2 text-[#00E5FF]">
-            <Sparkles size={16} />
-            <span>{stats?.totalCards || 0} cartes vues</span>
-          </div>
-          <div className="flex items-center gap-2 text-[#6FB1FC]">
-            <Trophy size={16} />
-            <span>{stats?.totalXP || 0} XP</span>
-          </div>
-          {error && (
-            <span className="text-orange-400 text-xs ml-auto">{error}</span>
-          )}
-        </motion.div>
+            {combo > 1 && (
+              <>
+                <div className="w-px h-4 bg-gray-700" />
+                <motion.div
+                  className="flex items-center gap-1 text-amber-400"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                >
+                  <Star size={14} className="fill-amber-400" />
+                  <span className="font-bold">{combo}x</span>
+                </motion.div>
+              </>
+            )}
 
-        {/* Combo indicator */}
+            {error && (
+              <span className="text-orange-400 text-xs ml-auto relative z-10 bg-orange-500/10 px-2 py-1 rounded-full">
+                {error}
+              </span>
+            )}
+          </div>
+        </SlideUp>
+
+        {/* Combo indicator - Enhanced */}
         <AnimatePresence>
           {showCombo && combo > 1 && (
             <motion.div
@@ -220,32 +280,66 @@ export function FunFactsPage() {
               exit={{ opacity: 0, scale: 1.5, y: -30 }}
               className="absolute top-32 left-1/2 -translate-x-1/2 z-50"
             >
-              <div
-                className="text-white font-bold text-2xl px-6 py-3 rounded-2xl"
+              <motion.div
+                className="relative text-white font-bold text-2xl px-8 py-4 rounded-2xl overflow-hidden"
                 style={{
                   background: 'linear-gradient(135deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%)',
-                  boxShadow: '0 0 30px rgba(0, 229, 255, 0.3)'
+                  boxShadow: '0 0 40px rgba(0, 229, 255, 0.5)'
                 }}
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 0.3, repeat: 3 }}
               >
-                {combo}x COMBO!
-              </div>
+                {/* Shimmer effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                  animate={{ x: ['-100%', '200%'] }}
+                  transition={{ duration: 0.6 }}
+                />
+                <div className="relative flex items-center gap-2">
+                  <motion.span
+                    className="text-3xl"
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {combo >= 5 ? '🔥' : combo >= 3 ? '⚡' : '✨'}
+                  </motion.span>
+                  <span>{combo}x COMBO!</span>
+                </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Card Area */}
-        <div className="relative w-full flex items-center justify-center" style={{ height: '420px' }}>
-          {loading && facts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-              >
-                <Loader2 className="w-12 h-12 text-[#4364F7]" />
-              </motion.div>
-              <p className="text-gray-400 mt-4">Chargement des faits...</p>
-            </div>
-          ) : currentFact ? (
+        {/* Card Area - Enhanced */}
+        <ScaleIn delay={0.2}>
+          <div className="relative w-full flex items-center justify-center" style={{ height: '420px' }}>
+            {loading && facts.length === 0 ? (
+              <div className="flex flex-col items-center justify-center">
+                {/* Enhanced loading spinner */}
+                <motion.div className="relative">
+                  {/* Outer ring */}
+                  <motion.div
+                    className="absolute inset-0 w-16 h-16 rounded-full border-2 border-genius-cyan/30"
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.2, 0.5] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  />
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  >
+                    <Loader2 className="w-16 h-16 text-primary-500" />
+                  </motion.div>
+                </motion.div>
+                <motion.p
+                  className="text-gray-400 mt-6 text-center"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  Chargement des faits...
+                </motion.p>
+                <p className="text-gray-600 text-sm mt-2">Prepare-toi a etre surpris !</p>
+              </div>
+            ) : currentFact ? (
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentFact.id}
@@ -356,13 +450,40 @@ export function FunFactsPage() {
               </Button>
             </motion.div>
           )}
-        </div>
-
-        {/* Remaining cards indicator */}
-        {facts.length > 0 && (
-          <div className="text-center text-slate-500 text-sm mt-2">
-            {facts.length} carte{facts.length > 1 ? 's' : ''} restante{facts.length > 1 ? 's' : ''}
           </div>
+        </ScaleIn>
+
+        {/* Remaining cards indicator - Enhanced */}
+        {facts.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center mt-4"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50">
+              <motion.div
+                className="flex gap-1"
+                initial="hidden"
+                animate="visible"
+              >
+                {Array.from({ length: Math.min(facts.length, 5) }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="w-2 h-2 rounded-full bg-genius-cyan"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: i * 0.05 }}
+                  />
+                ))}
+                {facts.length > 5 && (
+                  <span className="text-xs text-gray-500 ml-1">+{facts.length - 5}</span>
+                )}
+              </motion.div>
+              <span className="text-slate-400 text-sm">
+                {facts.length} carte{facts.length > 1 ? 's' : ''} restante{facts.length > 1 ? 's' : ''}
+              </span>
+            </div>
+          </motion.div>
         )}
       </div>
 
