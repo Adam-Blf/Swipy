@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-active-green)
 ![PWA](https://img.shields.io/badge/PWA-ready-blue)
-![Version](https://img.shields.io/badge/version-3.6.0-green)
+![Version](https://img.shields.io/badge/version-3.6.1-green)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
 ![Bundle](https://img.shields.io/badge/bundle-249KB-blue)
 
@@ -233,6 +233,11 @@ Hugging Face est le provider par defaut. Il fonctionne **sans cle API**!
 - Fallback: contenu local si aucun provider configure
 
 ## Changelog
+
+### 2026-01-23 - v3.6.1 - Blue Theme Consistency
+- **UPDATE**: Theme color mise à jour dans index.html et manifest.json (#4F46E5 -> #4364F7)
+- **UPDATE**: Harmonisation complète de la charte "Genius Blue Edition"
+- **CONSISTENCY**: Toutes les couleurs utilisent maintenant la palette bleue (Deep Electric #0052D4, Royal #4364F7, Sky #6FB1FC)
 
 ### 2026-01-23 - v3.6.0 - Genius Blue Edition
 - **NEW**: Charte graphique "Genius Blue Edition" - Design Tinder-style intellectuel

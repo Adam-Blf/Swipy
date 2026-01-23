@@ -91,21 +91,17 @@ export function FABControlsCompact({
     <div className="flex items-center justify-center gap-4 py-3">
       {/* NOPE */}
       <motion.button
-        className="w-12 h-12 rounded-full bg-white border-2 flex items-center justify-center transition-all"
-        style={{ borderColor: '#FF5252' }}
+        className="w-12 h-12 rounded-full bg-white border-2 border-genius-coral flex items-center justify-center transition-all"
         onClick={() => handleClick(onSwipeLeft)}
         disabled={disabled}
         whileTap={{ scale: 0.95 }}
       >
-        <X className="w-6 h-6" style={{ color: '#FF5252' }} strokeWidth={3} />
+        <X className="w-6 h-6 text-genius-coral" strokeWidth={3} />
       </motion.button>
 
       {/* FLIP */}
       <motion.button
-        className="w-10 h-10 rounded-full flex items-center justify-center"
-        style={{
-          background: 'linear-gradient(135deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%)',
-        }}
+        className="w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br from-genius-grad-start via-genius-grad-mid to-genius-grad-end"
         onClick={() => handleClick(onFlip)}
         disabled={disabled}
         whileTap={{ scale: 0.95 }}
@@ -115,13 +111,12 @@ export function FABControlsCompact({
 
       {/* GENIUS */}
       <motion.button
-        className="w-12 h-12 rounded-full bg-white border-2 flex items-center justify-center transition-all"
-        style={{ borderColor: '#00E5FF' }}
+        className="w-12 h-12 rounded-full bg-white border-2 border-genius-cyan flex items-center justify-center transition-all"
         onClick={() => handleClick(onSwipeRight)}
         disabled={disabled}
         whileTap={{ scale: 0.95 }}
       >
-        <Sparkles className="w-6 h-6" style={{ color: '#00E5FF' }} strokeWidth={2.5} />
+        <Sparkles className="w-6 h-6 text-genius-cyan" strokeWidth={2.5} />
       </motion.button>
     </div>
   );
@@ -130,7 +125,7 @@ export function FABControlsCompact({
 // Floating version that sticks to bottom
 export function FABControlsFloating(props: FABControlsProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 safe-area-bottom bg-gradient-to-t from-[#0F172A] via-[#0F172A]/95 to-transparent pt-8 pb-4">
+    <div className="fixed bottom-0 left-0 right-0 safe-area-bottom bg-gradient-to-t from-genius-bg via-genius-bg/95 to-transparent pt-8 pb-4">
       <FABControls {...props} />
     </div>
   );

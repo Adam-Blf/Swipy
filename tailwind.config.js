@@ -79,6 +79,11 @@ export default {
       borderRadius: {
         'card': '24px',
       },
+      // Gradient utilities
+      backgroundImage: {
+        'gradient-genius': 'linear-gradient(135deg, #0052D4 0%, #4364F7 50%, #6FB1FC 100%)',
+        'gradient-genius-reverse': 'linear-gradient(315deg, #6FB1FC 0%, #4364F7 50%, #0052D4 100%)',
+      },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
