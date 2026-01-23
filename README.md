@@ -2,7 +2,9 @@
 
 ![Status](https://img.shields.io/badge/status-active-green)
 ![PWA](https://img.shields.io/badge/PWA-ready-blue)
-![Version](https://img.shields.io/badge/version-3.2.0-green)
+![Version](https://img.shields.io/badge/version-3.4.0-green)
+![Build](https://img.shields.io/badge/build-passing-brightgreen)
+![Bundle](https://img.shields.io/badge/bundle-249KB-blue)
 
 ## Description
 
@@ -222,6 +224,15 @@ Accedez a Settings > Generation IA pour configurer un provider:
 - Fallback: contenu local si aucun provider configure
 
 ## Changelog
+
+### 2026-01-23 - v3.4.0
+- **NEW**: Code splitting pour bundle optimise (249KB vs 580KB)
+- **NEW**: Haptic feedback pour mobile (vibration API)
+- **NEW**: Toast notification system avec animations
+- **NEW**: Confetti effects pour celebrations
+- **NEW**: 15+ micro-animations CSS (wiggle, pop, heartbeat, etc.)
+- **PERF**: Vendor chunks separes (React, Framer, Dexie, Supabase)
+- **UX**: Touch feedback et ripple effects
 
 ### 2026-01-23 - v3.3.0
 - **NEW**: Integration Dexie.js pour IndexedDB robuste

@@ -68,5 +68,19 @@ export default defineConfig({
     alias: {
       '@': '/src'
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-framer': ['framer-motion'],
+          'vendor-supabase': ['@supabase/supabase-js'],
+          'vendor-dexie': ['dexie', 'dexie-react-hooks'],
+          'data-facts': ['./src/data/facts']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 600
   }
 })
