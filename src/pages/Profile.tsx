@@ -1,3 +1,8 @@
+/**
+ * Profile Page - Genius App v3.0
+ * Refonte complete avec stockage local flexible et nouvelles fonctionnalites
+ */
+
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
@@ -6,7 +11,6 @@ import {
   Crown,
   Trophy,
   Target,
-  Calendar,
   LogOut,
   ChevronRight,
   Zap,
@@ -19,7 +23,13 @@ import {
   Star,
   Lock,
   CheckCircle,
-  BarChart3
+  BarChart3,
+  FileText,
+  MessageSquare,
+  Database,
+  Sparkles,
+  Download,
+  Upload
 } from 'lucide-react'
 import { Card } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
@@ -27,8 +37,15 @@ import { Badge } from '../components/ui/Badge'
 import { TopBar } from '../components/layout/TopBar'
 import { BottomNav } from '../components/layout/BottomNav'
 import { useFlashcards } from '../contexts/FlashcardContext'
+import { useUserData } from '../contexts/UserDataContext'
 import { formatNumber } from '../lib/utils'
 import { calculateLevel } from '../types/flashcards'
+
+// Profile Section Components
+import { NotesSection } from '../components/profile/NotesSection'
+import { MemosSection } from '../components/profile/MemosSection'
+import { CustomDataSection } from '../components/profile/CustomDataSection'
+import { GoalsSection } from '../components/profile/GoalsSection'
 
 // Badge display component
 function BadgeItem({ badge, isLocked }: { badge: any; isLocked: boolean }) {
@@ -142,18 +159,23 @@ function SessionItem({ session }: { session: any }) {
   )
 }
 
+type TabId = 'stats' | 'badges' | 'history' | 'notes' | 'memos' | 'data' | 'goals'
+
 export function ProfilePage() {
   const navigate = useNavigate()
+  const { gamification, stats, getRecentSessions, getUnlockedBadges, getNextBadges } = useFlashcards()
+  const userData = useUserData()
+
+  const [activeTab, setActiveTab] = useState<TabId>('stats')
+
   // Mock profile data - no auth needed
   const profile = {
-    display_name: 'Genie',
+    display_name: userData.profile.nickname || 'Genie',
     username: 'genius_user',
     avatar_url: null,
     is_premium: false,
     hearts: 5
   }
-  const { gamification, stats, getRecentSessions, getUnlockedBadges, getNextBadges } = useFlashcards()
-  const [activeTab, setActiveTab] = useState<'stats' | 'badges' | 'history'>('stats')
 
   const levelInfo = calculateLevel(gamification.totalXp)
   const xpProgress = (levelInfo.xpInLevel / levelInfo.xpForNextLevel) * 100
@@ -204,22 +226,61 @@ export function ProfilePage() {
       onClick: () => {}
     },
     {
+      icon: <Sparkles className="w-5 h-5 text-purple-400" />,
+      label: 'IA Generation',
+      description: 'Configurer le LLM',
+      onClick: () => navigate('/settings')
+    },
+    {
       icon: <Settings className="w-5 h-5 text-gray-400" />,
       label: 'Parametres',
       description: 'Notifications, langue, etc.',
-      onClick: () => {}
+      onClick: () => navigate('/settings')
     }
   ]
 
   const handleSignOut = async () => {
-    // No auth, just redirect to home
     navigate('/')
   }
 
+  const handleExport = () => {
+    const data = userData.exportData()
+    const blob = new Blob([data], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `genius-backup-${new Date().toISOString().split('T')[0]}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const handleImport = () => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.json'
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0]
+      if (file) {
+        const text = await file.text()
+        const success = userData.importData(text)
+        if (success) {
+          alert('Donnees importees avec succes!')
+        } else {
+          alert('Erreur lors de l\'import')
+        }
+      }
+    }
+    input.click()
+  }
+
   const tabs = [
-    { id: 'stats', label: 'Stats', icon: <BarChart3 className="w-4 h-4" /> },
-    { id: 'badges', label: 'Badges', icon: <Award className="w-4 h-4" /> },
-    { id: 'history', label: 'Historique', icon: <Clock className="w-4 h-4" /> }
+    { id: 'stats' as TabId, label: 'Stats', icon: <BarChart3 className="w-4 h-4" /> },
+    { id: 'badges' as TabId, label: 'Badges', icon: <Award className="w-4 h-4" /> },
+    { id: 'history' as TabId, label: 'Historique', icon: <Clock className="w-4 h-4" /> },
+    { id: 'notes' as TabId, label: 'Notes', icon: <FileText className="w-4 h-4" /> },
+    { id: 'memos' as TabId, label: 'Memos', icon: <MessageSquare className="w-4 h-4" /> },
+    { id: 'goals' as TabId, label: 'Objectifs', icon: <Target className="w-4 h-4" /> },
+    { id: 'data' as TabId, label: 'Donnees', icon: <Database className="w-4 h-4" /> }
   ]
 
   return (
@@ -241,6 +302,8 @@ export function ProfilePage() {
                   alt="Avatar"
                   className="w-full h-full rounded-full object-cover"
                 />
+              ) : userData.profile.avatarEmoji ? (
+                <span className="text-5xl">{userData.profile.avatarEmoji}</span>
               ) : (
                 <img src="/ralph.png" alt="Ralph" className="w-20 h-20 object-contain" />
               )}
@@ -325,27 +388,29 @@ export function ProfilePage() {
           ))}
         </motion.div>
 
-        {/* Tabs */}
+        {/* Tabs - Scrollable */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="flex gap-2 mb-4 bg-slate-800/50 p-1 rounded-xl"
+          className="mb-4 overflow-x-auto scrollbar-hide"
         >
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg font-medium text-sm transition-all ${
-                activeTab === tab.id
-                  ? 'bg-primary-500 text-white'
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              {tab.icon}
-              {tab.label}
-            </button>
-          ))}
+          <div className="flex gap-2 bg-slate-800/50 p-1 rounded-xl min-w-max">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? 'bg-primary-500 text-white'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </motion.div>
 
         {/* Tab content */}
@@ -379,7 +444,6 @@ export function ProfilePage() {
                   Objectif du jour
                 </h3>
                 <div className="space-y-3">
-                  {/* Cards goal */}
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-gray-400 text-sm">Cartes revisees</span>
@@ -398,7 +462,6 @@ export function ProfilePage() {
                     </div>
                   </div>
 
-                  {/* XP goal */}
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-gray-400 text-sm">XP gagne</span>
@@ -413,25 +476,6 @@ export function ProfilePage() {
                           width: `${Math.min(100, (gamification.dailyGoal.xpEarned / gamification.dailyGoal.xpToEarn) * 100)}%`
                         }}
                         className="h-2 rounded-full bg-amber-500"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Study time goal */}
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-gray-400 text-sm">Temps d'etude</span>
-                      <span className="text-white text-sm font-medium">
-                        {gamification.dailyGoal.minutesStudied}/{gamification.dailyGoal.minutesToStudy} min
-                      </span>
-                    </div>
-                    <div className="w-full bg-slate-700 rounded-full h-2">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{
-                          width: `${Math.min(100, (gamification.dailyGoal.minutesStudied / gamification.dailyGoal.minutesToStudy) * 100)}%`
-                        }}
-                        className="h-2 rounded-full bg-blue-500"
                       />
                     </div>
                   </div>
@@ -485,7 +529,6 @@ export function ProfilePage() {
               exit={{ opacity: 0, y: -10 }}
               className="space-y-4"
             >
-              {/* Unlocked badges */}
               {unlockedBadges.length > 0 && (
                 <Card variant="default" padding="md">
                   <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
@@ -500,7 +543,6 @@ export function ProfilePage() {
                 </Card>
               )}
 
-              {/* Next badges to unlock */}
               {nextBadges.length > 0 && (
                 <Card variant="default" padding="md">
                   <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
@@ -582,6 +624,103 @@ export function ProfilePage() {
               )}
             </motion.div>
           )}
+
+          {activeTab === 'notes' && (
+            <motion.div
+              key="notes"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <NotesSection
+                notes={userData.notes}
+                onAddNote={userData.addNote}
+                onUpdateNote={userData.updateNote}
+                onDeleteNote={userData.deleteNote}
+                onTogglePin={userData.toggleNotePin}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === 'memos' && (
+            <motion.div
+              key="memos"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <MemosSection
+                memos={userData.memos}
+                onAddMemo={userData.addMemo}
+                onUpdateMemo={userData.updateMemo}
+                onDeleteMemo={userData.deleteMemo}
+                onToggleComplete={userData.toggleMemoComplete}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === 'goals' && (
+            <motion.div
+              key="goals"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <GoalsSection
+                goals={userData.goals}
+                onAddGoal={userData.addGoal}
+                onUpdateGoal={userData.updateGoal}
+                onDeleteGoal={userData.deleteGoal}
+                onToggleMilestone={userData.toggleMilestone}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === 'data' && (
+            <motion.div
+              key="data"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-4"
+            >
+              <CustomDataSection
+                data={userData.customData}
+                onAddData={userData.addCustomData}
+                onUpdateData={userData.updateCustomData}
+                onDeleteData={userData.deleteCustomData}
+                getAllCategories={userData.getAllCategories}
+              />
+
+              {/* Export/Import Section */}
+              <Card variant="default" padding="md">
+                <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
+                  <Database className="w-4 h-4 text-gray-400" />
+                  Sauvegarde
+                </h3>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={handleExport}
+                    variant="secondary"
+                    size="sm"
+                    className="flex-1"
+                    leftIcon={<Download className="w-4 h-4" />}
+                  >
+                    Exporter
+                  </Button>
+                  <Button
+                    onClick={handleImport}
+                    variant="secondary"
+                    size="sm"
+                    className="flex-1"
+                    leftIcon={<Upload className="w-4 h-4" />}
+                  >
+                    Importer
+                  </Button>
+                </div>
+              </Card>
+            </motion.div>
+          )}
         </AnimatePresence>
 
         {/* Menu items */}
@@ -639,7 +778,7 @@ export function ProfilePage() {
 
         {/* App version */}
         <p className="text-center text-xs text-gray-600 mt-6">
-          Genius v2.1.0 - Made with Ralph
+          Genius v3.0 - Made with Ralph + IA
         </p>
       </div>
 

@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { FunFactsPage } from '../pages/FunFacts'
+import { FlashcardProvider } from '../contexts/FlashcardContext'
+import { UserDataProvider } from '../contexts/UserDataContext'
+import { ErrorBoundary } from '../components/ErrorBoundary'
 
 // Lazy load pages to avoid circular dependencies
 import { lazy, Suspense } from 'react'
@@ -14,6 +17,7 @@ const OnboardingPage = lazy(() => import('../pages/Onboarding').then(m => ({ def
 const NotesInputPage = lazy(() => import('../pages/NotesInput').then(m => ({ default: m.NotesInputPage })))
 const FlashcardsPlayerPage = lazy(() => import('../pages/FlashcardsPlayer').then(m => ({ default: m.FlashcardsPlayerPage })))
 const TriviaQuizPage = lazy(() => import('../pages/TriviaQuiz').then(m => ({ default: m.TriviaQuizPage })))
+const SettingsPage = lazy(() => import('../pages/Settings').then(m => ({ default: m.SettingsPage })))
 
 function LoadingScreen() {
   return (
@@ -26,27 +30,34 @@ function LoadingScreen() {
 export function AppRouter() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<LoadingScreen />}>
-        <Routes>
-          {/* All routes are now directly accessible */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/learn" element={<LearnPage />} />
-          <Route path="/lesson/:categoryId/:lessonId" element={<LessonPage />} />
-          <Route path="/leaderboard" element={<LeaderboardPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/premium" element={<PremiumPage />} />
-          <Route path="/onboarding" element={<OnboardingPage />} />
+      <ErrorBoundary>
+        <UserDataProvider>
+          <FlashcardProvider>
+            <Suspense fallback={<LoadingScreen />}>
+              <Routes>
+                {/* All routes are now directly accessible */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/learn" element={<LearnPage />} />
+                <Route path="/lesson/:categoryId/:lessonId" element={<LessonPage />} />
+                <Route path="/leaderboard" element={<LeaderboardPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/premium" element={<PremiumPage />} />
+                <Route path="/onboarding" element={<OnboardingPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
 
-          {/* Learning Routes */}
-          <Route path="/funfacts" element={<FunFactsPage />} />
-          <Route path="/notes" element={<NotesInputPage />} />
-          <Route path="/flashcards" element={<FlashcardsPlayerPage />} />
-          <Route path="/trivia" element={<TriviaQuizPage />} />
+                {/* Learning Routes */}
+                <Route path="/funfacts" element={<FunFactsPage />} />
+                <Route path="/notes" element={<NotesInputPage />} />
+                <Route path="/flashcards" element={<FlashcardsPlayerPage />} />
+                <Route path="/trivia" element={<TriviaQuizPage />} />
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
+                {/* Fallback */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
+          </FlashcardProvider>
+        </UserDataProvider>
+      </ErrorBoundary>
     </BrowserRouter>
   )
 }
